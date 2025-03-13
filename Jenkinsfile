@@ -2,10 +2,23 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout Main') {
+            steps {
+                script {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/main']],
+                        userRemoteConfigs: [[url: 'https://github.com/YOUR_REPO.git']]
+                    ])
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
-                    sh 'g++ -o PES1UG22CS614-1 PES1UG22CS614.cpp'  // Compile C++ file
+                    sh 'ls -l'  // Check if .cpp is available
+                    sh 'g++ -o PES1UG22CS614-1 PES1UG22CS614.cpp'
                 }
             }
         }
@@ -13,14 +26,8 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh './PES1UG22CS614-1'  // Run the compiled file
+                    sh './PES1UG22CS614-1'
                 }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deployment stage (placeholder for real deployment)'
             }
         }
     }
