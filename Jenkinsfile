@@ -2,23 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout Main') {
-            steps {
-                script {
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: '*/main']],
-                        userRemoteConfigs: [[url: 'https://github.com/srishmath/PES1UG22CS614_Jenkins.git']]
-                    ])
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 script {
-                    sh 'ls -l'  // Check if .cpp is available
-                    sh 'g++ -o PES1UG22CS614-1 PES1UG22CS614.cpp'
+                    sh 'g++ PES1UG22CS614.cpp -o PES1UG22CS614'
                 }
             }
         }
@@ -26,8 +13,14 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh './PES1UG22CS614-1'
+                    sh './PES1UG22CS614'
                 }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying application...'
             }
         }
     }
